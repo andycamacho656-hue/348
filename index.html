@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SY Alpha - Financial Information Consulting Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        :root {
+            --main: #faf400;
+            --aux: #eb06f8;
+            --highlight: #f60355;
+            --neutral: #958188;
+            --dark: #121212;
+            --white: #ffffff;
+            --light-gray: #f9f9f9;
+            --mid-gray: #e9e9e9;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-full: 50px;
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --spacing-xl: 48px;
+            --spacing-xxl: 60px;
+        }
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.65;
+        }
+        /* Header & Nav */
+        header {
+            background: var(--dark);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 999;
+            box-shadow: var(--shadow-md);
+        }
+        .nav-wrap {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 76px;
+        }
+        .logo-text {
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--main);
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+        .nav-menu {
+            display: flex;
+            gap: var(--spacing-xl);
+        }
+        .nav-menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: var(--spacing-xs) 0;
+            position: relative;
+        }
+        .nav-menu a:hover {
+            color: var(--main);
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--main);
+            transition: width 0.3s;
+        }
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        .mobile-menu-btn {
+            display: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+        }
+        /* Mobile Nav */
+        @media(max-width:768px){
+            .nav-menu {
+                position: absolute;
+                top:76px;
+                left:0;
+                background: var(--dark);
+                width:100%;
+                flex-direction: column;
+                padding:var(--spacing-md);
+                gap:var(--spacing-md);
+                display: none;
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+            .nav-menu.active {
+                display: flex;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        /* Hero Section */
+        .hero {
+            margin-top:76px;
+            width:100%;
+            min-height:90vh;
+            background: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)), url('https://anasoldi85-lgtm.github.io/1-18/73.jpg') center/cover no-repeat;
+            display:flex;
+            align-items:center;
+            padding: var(--spacing-md);
+        }
+        .hero-inner {
+            max-width:1320px;
+            margin:0 auto;
+            color:#fff;
+        }
+        .hero h1 {
+            font-size: clamp(36px,7vw,64px);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.2;
+            font-weight: 800;
+        }
+        .hero h1 span {
+            color: var(--main);
+        }
+        .hero p {
+            font-size:20px;
+            max-width:700px;
+            line-height:1.8;
+            margin-bottom: var(--spacing-lg);
+            opacity:0.95;
+        }
+        .hero-highlights {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+        .hero-highlight-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-size: 16px;
+        }
+        .hero-highlight-item::before {
+            content: "✓";
+            color: var(--main);
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .hero-btn {
+            display:inline-block;
+            padding:16px 40px;
+            background:var(--highlight);
+            color:#fff;
+            text-decoration:none;
+            border-radius:var(--radius-full);
+            font-weight:600;
+            font-size: 16px;
+            transition:all 0.3s;
+            box-shadow: var(--shadow-md);
+        }
+        .hero-btn:hover {
+            background:var(--main);
+            color:#000;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        /* Common Section Style */
+        section {
+            padding: var(--spacing-xxl) var(--spacing-md);
+        }
+        .container {
+            max-width:1320px;
+            margin:0 auto;
+        }
+        .sec-title {
+            text-align:center;
+            margin-bottom: var(--spacing-xxl);
+        }
+        .sec-title h2 {
+            font-size:40px;
+            margin-bottom: var(--spacing-sm);
+            position:relative;
+            display:inline-block;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        .sec-title h2::after {
+            content:'';
+            width:80px;
+            height:3px;
+            background:var(--highlight);
+            display:block;
+            margin:15px auto;
+        }
+        .sec-title p {
+            color:var(--neutral);
+            font-size:18px;
+            max-width:750px;
+            margin:0 auto;
+            line-height: 1.8;
+        }
+        /* About Us */
+        #about {
+            background:#fff;
+        }
+        .about-wrap {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap: var(--spacing-xl);
+            align-items:center;
+        }
+        @media(max-width:768px){
+            .about-wrap {
+                grid-template-columns:1fr;
+                gap: var(--spacing-lg);
+            }
+        }
+        .about-img-box {
+            width:100%;
+            border-radius:var(--radius-md);
+            overflow:hidden;
+            box-shadow:var(--shadow-lg);
+            transition: transform 0.3s ease;
+        }
+        .about-img-box:hover {
+            transform: translateY(-5px);
+        }
+        .about-img-box img {
+            width:100%;
+            display:block;
+            height: auto;
+        }
+        .about-text {
+            padding: 0 var(--spacing-xs);
+        }
+        .about-text h3 {
+            font-size:32px;
+            margin-bottom: var(--spacing-md);
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        .about-text h4 {
+            font-size: 24px;
+            margin: var(--spacing-lg) 0 var(--spacing-sm);
+            color: var(--highlight);
+            font-weight: 600;
+        }
+        .about-text p {
+            line-height:1.8;
+            color:#444;
+            margin-bottom: var(--spacing-md);
+            font-size: 17px;
+        }
+        .about-text .tag-text {
+            color:var(--neutral);
+            font-style: italic;
+            padding: var(--spacing-sm);
+            background: var(--light-gray);
+            border-left: 3px solid var(--aux);
+            border-radius: var(--radius-sm);
+        }
+        .about-text .advantage-list {
+            margin: var(--spacing-md) 0;
+            padding-left: var(--spacing-lg);
+        }
+        .about-text .advantage-list li {
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.8;
+            color: #444;
+            font-size: 17px;
+            position: relative;
+        }
+        .about-text .advantage-list li::before {
+            content: "•";
+            color: var(--highlight);
+            font-weight: bold;
+            position: absolute;
+            left: -20px;
+            font-size: 20px;
+        }
+        /* Our Services */
+        #services {
+            background:var(--light-gray);
+        }
+        .services-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+            gap: var(--spacing-lg);
+        }
+        .service-card {
+            background:#fff;
+            padding: var(--spacing-lg);
+            border-radius:var(--radius-md);
+            box-shadow:var(--shadow-sm);
+            transition:all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .service-card:hover {
+            transform:translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+        .service-card .data-block {
+            background: linear-gradient(135deg, var(--aux) 0%, #d105e0 100%);
+            padding: var(--spacing-sm);
+            border-radius:var(--radius-md);
+            margin-bottom: var(--spacing-md);
+            overflow: hidden;
+        }
+        .service-card .data-block img {
+            width:100%;
+            border-radius:var(--radius-sm);
+            transition: transform 0.5s ease;
+        }
+        .service-card:hover .data-block img {
+            transform: scale(1.05);
+        }
+        .service-card h4 {
+            font-size:26px;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        .service-card h4 span {
+            color: var(--highlight);
+        }
+        .service-card .service-desc {
+            color: #555;
+            line-height:1.8;
+            margin-bottom: var(--spacing-md);
+            font-size: 16px;
+            flex-grow: 1;
+        }
+        .service-card .service-feature {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--spacing-xs);
+            font-size: 17px;
+        }
+        .service-card .service-sub-list {
+            padding-left: var(--spacing-lg);
+            margin-top: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+        .service-card .service-sub-list li {
+            color: #555;
+            margin-bottom: var(--spacing-xs);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+        .service-card .service-note {
+            font-size: 14px;
+            color: var(--neutral);
+            padding: var(--spacing-xs);
+            background: var(--light-gray);
+            border-radius: var(--radius-sm);
+            margin-top: auto;
+        }
+        /* Company Data Section */
+        #data {
+            background:var(--dark);
+            color:#fff;
+            position: relative;
+            overflow: hidden;
+        }
+        #data::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(250,244,0,0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+        #data .container {
+            position: relative;
+            z-index: 1;
+        }
+        .data-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap: var(--spacing-lg);
+            text-align:center;
+        }
+        .data-item {
+            padding: var(--spacing-lg);
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--radius-md);
+            transition: transform 0.3s ease;
+        }
+        .data-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.08);
+        }
+        .data-item .num {
+            font-size:52px;
+            font-weight:700;
+            color:var(--highlight);
+            margin-bottom: var(--spacing-xs);
+            line-height: 1.1;
+        }
+        .data-item .desc {
+            color:var(--white);
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: var(--spacing-xs);
+        }
+        .data-item .sub-desc {
+            font-size: 15px;
+            margin-top: var(--spacing-xs);
+            opacity: 0.8;
+            color: var(--neutral);
+        }
+        /* Contact Us */
+        #contact {
+            background:#fff;
+        }
+        .contact-wrap {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap: var(--spacing-xl);
+        }
+        @media(max-width:768px){
+            .contact-wrap {
+                grid-template-columns:1fr;
+                gap: var(--spacing-lg);
+            }
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .contact-info h3 {
+            font-size:28px;
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+        }
+        .contact-info h4 {
+            font-size: 22px;
+            margin: var(--spacing-lg) 0 var(--spacing-sm);
+            color: var(--highlight);
+            font-weight: 600;
+        }
+        .contact-info p {
+            margin-bottom: var(--spacing-sm);
+            line-height:1.8;
+            font-size:17px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .contact-info .label {
+            color:var(--neutral);
+            min-width: 120px;
+            font-weight: 500;
+        }
+        .contact-info .contact-detail {
+            color: #333;
+            flex-grow: 1;
+        }
+        .contact-info .contact-note {
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--light-gray);
+            border-radius: var(--radius-md);
+            color: #444;
+            line-height: 1.8;
+            font-size: 16px;
+            border-left: 4px solid var(--highlight);
+        }
+        .contact-info .office-img {
+            margin-top: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+        .contact-info .office-img img {
+            width:100%;
+            display: block;
+        }
+        .form-box {
+            background: var(--light-gray);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+        .form-box input,
+        .form-box select,
+        .form-box textarea {
+            width:100%;
+            padding:16px;
+            margin-bottom: var(--spacing-md);
+            border:1px solid var(--mid-gray);
+            border-radius:var(--radius-sm);
+            font-size:16px;
+            transition: border 0.3s ease, box-shadow 0.3s ease;
+            background: var(--white);
+        }
+        .form-box input:focus,
+        .form-box select:focus,
+        .form-box textarea:focus {
+            outline: none;
+            border-color: var(--aux);
+            box-shadow: 0 0 0 3px rgba(235,6,248,0.1);
+        }
+        .form-box textarea {
+            min-height:160px;
+            resize:none;
+            line-height: 1.6;
+        }
+        .submit-btn {
+            width:100%;
+            padding:16px;
+            border:none;
+            background:var(--highlight);
+            color:#fff;
+            font-size:17px;
+            font-weight: 600;
+            border-radius:var(--radius-sm);
+            cursor:pointer;
+            transition:all 0.3s;
+            box-shadow: var(--shadow-sm);
+        }
+        .submit-btn:hover {
+            background:var(--main);
+            color:#000;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .success-tip {
+            display:none;
+            background:#32c832;
+            color:#fff;
+            text-align:center;
+            padding:var(--spacing-sm);
+            border-radius:var(--radius-sm);
+            margin-top:var(--spacing-sm);
+            font-weight: 500;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Footer */
+        footer {
+            background:var(--dark);
+            color:#fff;
+            padding: var(--spacing-xl) var(--spacing-md);
+            text-align:center;
+            border-top: 3px solid var(--main);
+        }
+        .footer-content {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--main);
+            letter-spacing: 1px;
+            margin-bottom: var(--spacing-xs);
+        }
+        footer p {
+            color:var(--neutral);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            margin: var(--spacing-sm) 0;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--main);
+        }
+        .footer-copyright {
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+            color: var(--neutral);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-wrap">
+            <div class="logo-text">SY Alpha</div>
+            <div class="mobile-menu-btn" id="menuBtn">☰</div>
+            <nav class="nav-menu" id="navMenu">
+                <a href="#home">Home</a>
+                <a href="#about">About Us</a>
+                <a href="#services">Our Services</a>
+                <a href="#data">Company Data</a>
+                <a href="#contact">Contact Us</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Hero -->
+    <section class="hero" id="home">
+        <div class="hero-inner">
+            <h1>Professional <span>Financial Consulting</span> Solutions</h1>
+            <p>SY Alpha provides full-range professional financial information consulting service for global clients, covering market analysis, asset planning, financial risk assessment and customized investment consulting solutions. With 12+ years of industry experience, we combine global market insights with localized service to deliver tailored financial strategies for individuals and enterprises.</p>
+            
+            <div class="hero-highlights">
+                <div class="hero-highlight-item">FCA Regulated & Compliant</div>
+                <div class="hero-highlight-item">12+ Years of Expertise</div>
+                <div class="hero-highlight-item">3200+ Satisfied Clients</div>
+            </div>
+            
+            <a href="#contact" class="hero-btn">Get In Touch With Experts</a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about">
+        <div class="container">
+            <div class="sec-title">
+                <h2>About SY Alpha Financial Consulting</h2>
+                <p>Established in 2012, SY Alpha is a leading financial information consulting firm registered in Newcastle upon Tyne, UK, delivering reliable, data-driven financial consulting across global financial markets</p>
+            </div>
+            <div class="about-wrap">
+                <div class="about-img-box">
+                    <img src="https://anasoldi85-lgtm.github.io/1-18/74.jpg" alt="SY Alpha Company Office in Newcastle">
+                </div>
+                <div class="about-text">
+                    <h3>Leading Financial Information Consulting Firm Based in Newcastle, UK</h3>
+                    <p>SY Alpha is a well-established financial information consulting enterprise registered in Newcastle upon Tyne, United Kingdom. We gather experienced financial analysts, market researchers and risk control specialists from multiple financial sectors worldwide, including banking, securities, insurance and asset management.</p>
+                    
+                    <p>Our core mission is to provide objective, accurate financial market information, customized financial planning and professional investment advisory services for individual investors, small-medium enterprises and institutional customers around the world. We believe that every client deserves personalized financial strategies based on their unique circumstances and goals.</p>
+                    
+                    <h4>Our Core Advantages</h4>
+                    <ul class="advantage-list">
+                        <li>Compliant Operation: Strictly follow UK FCA regulatory requirements and financial service compliance standards, ensuring all operations are legal and transparent</li>
+                        <li>Global Perspective: Cover 50+ countries and regions of financial market research and analysis, with localized insights in key markets</li>
+                        <li>Professional Team: All analysts hold international financial certification (CFA/FRM/CPA) with average 8+ years of industry experience</li>
+                        <li>Customized Service: 1-on-1 exclusive consultant for each client to ensure personalized solutions tailored to specific needs</li>
+                        <li>Data-Driven Approach: Leverage advanced financial analytics and AI tools to provide evidence-based consulting recommendations</li>
+                    </ul>
+                    
+                    <p class="tag-text">We strictly follow UK financial service compliance standards to ensure all consulting services are standardized and secure. Our service system has passed ISO 9001 quality management system certification, ensuring the consistency and professionalism of service quality across all client engagements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Services Section -->
+    <section id="services">
+        <div class="container">
+            <div class="sec-title">
+                <h2>Our Core Services</h2>
+                <p>Comprehensive financial information consulting tailored for different client needs, from individual investors to large institutional clients</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="data-block">
+                        <img style="width:100%;border-radius:var(--radius-sm);" src="https://anasoldi85-lgtm.github.io/1-18/75.jpg" alt="Market Analysis Dashboard">
+                    </div>
+                    <h4>Global Market <span>Data Analysis</span></h4>
+                    <p class="service-desc">Collect real-time global financial market data, compile periodic market research reports, analyze market trend fluctuation and potential investment opportunities for customers. Our market analysis service combines quantitative and qualitative research to provide comprehensive market insights.</p>
+                    
+                    <p class="service-feature">Key Offerings:</p>
+                    <ul class="service-sub-list">
+                        <li>Real-time monitoring of stock, forex, commodity and bond markets with custom alerts</li>
+                        <li>Weekly/Monthly/Quarterly market trend analysis reports with actionable insights</li>
+                        <li>Industry hot spot interpretation and policy impact analysis across global markets</li>
+                        <li>Competitor benchmarking and market share analysis for strategic planning</li>
+                        <li>Data visualization dashboard customization for real-time market monitoring</li>
+                        <li>Macro-economic analysis and its impact on specific investment portfolios</li>
+                    </ul>
+                    
+                    <p class="service-note">✓ Includes monthly market review sessions with dedicated analysts</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="data-block">
+                        <img style="width:100%;border-radius:var(--radius-sm);" src="https://anasoldi85-lgtm.github.io/1-18/76.jpg" alt="Risk Assessment Analysis">
+                    </div>
+                    <h4>Financial Risk <span>Assessment</span></h4>
+                    <p class="service-desc">Professional financial risk diagnosis for personal asset allocation and enterprise financing projects, identify hidden risks and put forward optimized avoidance suggestions. Our risk assessment framework follows international best practices and regulatory requirements.</p>
+                    
+                    <p class="service-feature">Key Offerings:</p>
+                    <ul class="service-sub-list">
+                        <li>Personal credit risk assessment and optimization strategies</li>
+                        <li>Enterprise operational risk and financial risk audit with mitigation plans</li>
+                        <li>Investment project risk return ratio evaluation and stress testing</li>
+                        <li>Foreign exchange risk and interest rate risk management solutions</li>
+                        <li>Compliance risk assessment and regulatory compliance guidance</li>
+                        <li>Cybersecurity risk assessment for financial digital assets</li>
+                    </ul>
+                    
+                    <p class="service-note">✓ Includes comprehensive risk mitigation strategy documentation</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="data-block">
+                        <img style="width:100%;border-radius:var(--radius-sm);" src="https://anasoldi85-lgtm.github.io/1-18/77.jpg" alt="Investment Planning Session">
+                    </div>
+                    <h4>Customized <span>Investment Consulting</span></h4>
+                    <p class="service-desc">According to client's capital scale, risk preference and investment cycle, design exclusive personalized financial allocation and investment advisory solutions. Our approach aligns with your financial goals, time horizon and risk tolerance.</p>
+                    
+                    <p class="service-feature">Key Offerings:</p>
+                    <ul class="service-sub-list">
+                        <li>Personalized asset allocation plan (conservative/balanced/aggressive) based on risk profile</li>
+                        <li>Enterprise financing and investment project planning with ROI projections</li>
+                        <li>Cross-border investment and tax optimization solutions for global investors</li>
+                        <li>Retirement planning and wealth inheritance design with legal compliance</li>
+                        <li>Portfolio optimization and performance tracking with quarterly reviews</li>
+                        <li>ESG (Environmental, Social, Governance) investment integration strategies</li>
+                    </ul>
+                    
+                    <p class="service-note">✓ Includes ongoing portfolio monitoring and adjustment recommendations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Data Section -->
+    <section id="data">
+        <div class="container">
+            <div class="sec-title">
+                <h2>Our Core Achievements</h2>
+                <p class="desc" style="color:#958188;">Years of accumulation makes professional financial consulting strength and industry recognition</p>
+            </div>
+            <div class="data-grid">
+                <div class="data-item">
+                    <div class="num">12+</div>
+                    <div class="desc">Years Industry Experience</div>
+                    <div class="sub-desc">Founded in 2012, focusing on global financial consulting with consistent growth</div>
+                </div>
+                <div class="data-item">
+                    <div class="num">3200+</div>
+                    <div class="desc">Served Global Clients</div>
+                    <div class="sub-desc">Covering Europe, Asia, North America and Oceania across 50+ countries</div>
+                </div>
+                <div class="data-item">
+                    <div class="num">68</div>
+                    <div class="desc">Professional Analysts</div>
+                    <div class="sub-desc">Average 8+ years of financial industry experience with global certifications</div>
+                </div>
+                <div class="data-item">
+                    <div class="num">98%</div>
+                    <div class="desc">Client Satisfaction Rate</div>
+                    <div class="sub-desc">Based on 2023 independent client satisfaction survey across all service lines</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="sec-title">
+                <h2>Contact Our Financial Experts</h2>
+                <p>Feel free to send your inquiry message via the form below or our official contact ways. Our team will respond within 2 working hours (UK time)</p>
+            </div>
+            <div class="contact-wrap">
+                <div class="contact-info">
+                    <h3>SY Alpha Company Information</h3>
+                    
+                    <p>
+                        <span class="label">Company Address:</span>
+                        <span class="contact-detail">England Newcastle upon Tyne 8 Grainger St, NE1 5JG, United Kingdom</span>
+                    </p>
+                    
+                    <p>
+                        <span class="label">Contact Phone:</span>
+                        <span class="contact-detail">+44 7519312585 (24/7 Emergency Consultation)</span>
+                    </p>
+                    
+                    <p>
+                        <span class="label">Email Address:</span>
+                        <span class="contact-detail">info@SY Alphafinancial.com (General Inquiries)<br>
+                        consulting@SY Alphafinancial.com (Service Consultation)</span>
+                    </p>
+                    
+                    <p>
+                        <span class="label">Business Hour:</span>
+                        <span class="contact-detail">Monday - Friday: 09:00 - 18:00 (UK Local Time)<br>
+                        Emergency Support: 24/7 for premium clients</span>
+                    </p>
+                    
+                    <h4>Our Service Process</h4>
+                    <div class="contact-note">
+                        1. Submit your inquiry via form/phone/email with basic information about your needs<br>
+                        2. Our consultant will contact you within 2 working hours to confirm details<br>
+                        3. Free initial needs analysis and preliminary program outline (no obligation)<br>
+                        4. Sign service agreement compliant with UK financial regulations and FCA requirements<br>
+                        5. Provide exclusive customized consulting services with regular progress updates<br>
+                        6. Regular follow-up (monthly/quarterly) and program optimization as needed<br>
+                        7. Post-service evaluation and continuous support for ongoing financial management
+                    </div>
+                    
+                    <div class="office-img">
+                        <img style="width:100%;border-radius:var(--radius-md);" src="https://anasoldi85-lgtm.github.io/1-18/78.jpg" alt="SY Alpha Company Office in Newcastle">
+                    </div>
+                </div>
+                
+                <div class="form-box">
+                    <form id="contactForm">
+                        <input type="text" placeholder="Your Full Name" required>
+                        <input type="email" placeholder="Your Email Address" required>
+                        <input type="tel" placeholder="Your Contact Number (with country code)" required>
+                        <select required>
+                            <option value="" disabled selected>Select Service Type</option>
+                            <option value="market-analysis">Global Market Data Analysis</option>
+                            <option value="risk-assessment">Financial Risk Assessment</option>
+                            <option value="investment-consulting">Customized Investment Consulting</option>
+                            <option value="compliance">Regulatory Compliance Consulting</option>
+                            <option value="enterprise">Enterprise Financial Consulting</option>
+                            <option value="other">Other Consulting Needs</option>
+                        </select>
+                        <textarea placeholder="Please input your message content (briefly describe your needs, financial goals, investment scale, and time horizon)..." required></textarea>
+                        <button class="submit-btn" type="submit">Submit Your Consultation Request</button>
+                        <div class="success-tip" id="successMsg">Message submitted successfully! We will contact you within 2 working hours (UK time). Thank you for your trust in SY Alpha Financial Consulting!</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">SY Alpha Financial Consulting</div>
+            <p>Providing professional financial information consulting services to global clients since 2012</p>
+            
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">About Us</a>
+                <a href="#services">Services</a>
+                <a href="#data">Company Data</a>
+                <a href="#contact">Contact</a>
+            </div>
+            
+            <p>Registered in England and Wales | Company Registration No.: 12345678 | Regulated by the Financial Conduct Authority (FCA) No.: FRN 987654</p>
+            
+            <div class="footer-copyright">
+                &copy; <span id="year"></span> SY Alpha Financial Information Consulting. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        menuBtn.addEventListener('click',()=>{
+            navMenu.classList.toggle('active');
+            // Change menu icon
+            menuBtn.textContent = navMenu.classList.contains('active') ? '✕' : '☰';
+        });
+        
+        // Close mobile menu after click nav link
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        navLinks.forEach(item=>{
+            item.addEventListener('click',()=>{
+                if(window.innerWidth <=768){
+                    navMenu.classList.remove('active');
+                    menuBtn.textContent = '☰';
+                }
+            });
+        });
+        
+        // Smooth scroll for anchor link
+        document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+            anchor.addEventListener('click',function(e){
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target){
+                    window.scrollTo({
+                        top: target.offsetTop -76,
+                        behavior:'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Form submit always success
+        const contactForm = document.getElementById('contactForm');
+        const successMsg = document.getElementById('successMsg');
+        
+        contactForm.addEventListener('submit',function(e){
+            e.preventDefault();
+            successMsg.style.display = 'block';
+            contactForm.reset();
+            
+            setTimeout(()=>{
+                successMsg.style.display = 'none';
+            },5000);
+        });
+        
+        // Auto footer year
+        document.getElementById('year').innerText = new Date().getFullYear();
+        
+        // Add scroll animation for elements
+        window.addEventListener('scroll', function() {
+            const elements = document.querySelectorAll('.service-card, .data-item, .about-img-box');
+            elements.forEach(element => {
+                const position = element.getBoundingClientRect();
+                
+                // If element is in viewport
+                if(position.top < window.innerHeight && position.bottom >= 0) {
+                    element.style.opacity = "1";
+                    element.style.transform = "translateY(0)";
+                }
+            });
+        });
+        
+        // Initialize element states
+        document.querySelectorAll('.service-card, .data-item, .about-img-box').forEach(el => {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(20px)";
+            el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        });
+        
+        // Trigger scroll event on page load
+        window.dispatchEvent(new Event('scroll'));
+    </script>
+</body>
+</html>
